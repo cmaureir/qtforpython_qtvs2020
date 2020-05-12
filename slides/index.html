@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Qt for Python</title>
+
+  <meta name="description" content="Qt for Python - Qt Virtual Summit 2020">
+  <meta name="author" content="Cristian Maureira-Fredes">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <link rel="stylesheet" href="css/reveal.css">
+  <link rel="stylesheet" href="css/theme/qt.css" id="theme">
+
+  <!-- Theme used for syntax highlighting of code -->
+  <link rel="stylesheet" href="lib/css/zenburn.css">
+
+  <!-- Printing and PDF exports -->
+  <script>
+  if( window.location.search.match( /print-pdf/gi ) ) {
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = 'css/print/pdf.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  }
+  </script>
+
+  <!--[if lt IE 9]>
+  <script src="lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<!--*****************************************************************************-->
+<body>
+<div class="reveal">
+<div class="slides">
+  <!--***************************************************************************-->
+  <section>
+  <h2><i class="yellow">Embracing <img class="plain" style="vertical-align: middle;width: 10%;background-color: rgba(0,0,0,0);" src="img/python.svg" /></i></h2>
+  <h3>From <i class="blue-light">Prototypes</i><br/>to <i class="blue-light">ₕ<i class="gray">y</i><i class="green">b</i><i class="gray">ᵣᵢ</i><i class="yellow">d</i></i> Applications</h3>
+  <img src="img/qtvs.svg" style="background: rgba(0,0,0,0);height: 50px; border: 0px;">
+  </section>
+  <!--***************************************************************************-->
+  <section>
+    <h2>About</h2>
+    <div id="left70">
+        <p style="text-align: right;">
+        <br/>
+        Dr. <i class="yellow">Cristián</i> Maureira-Fredes</br>
+        <font style="font-size: 80%;"><i class="blue-light">R&amp;D Manager (Foundation Area)</i></font><br/>
+        <font style="font-size: 65%;">The <i class="green"><b>Qt</b></i> Company</font>
+        </p>
+    </div>
+    <div id="right30">
+        <p style="text-align: left;">
+            <img src="img/me.jpg" />
+        </p>
+    </div>
+  </section>
+  <!--***************************************************************************-->
+  <section>
+    <h2>Outline 📖</h2>
+    <div id="left">
+        <ul>
+            <li><i class="yellow">Setup</i></li>
+            <ul style="font-size: 80%;">
+                <li>Installation</li>
+                <li>Building from source</li>
+            </ul>
+            <li><i class="yellow">PySide</i></li>
+            <ul style="font-size: 80%;">
+                <li>Widget based app (.ui, .qrc)</li>
+                <li>QML interaction</li>
+                <li>Other Python modules</li>
+            </ul>
+        </ul>
+    </div>
+    <div id="right">
+        <ul>
+            <li><i class="yellow">Shiboken</i></li>
+            <ul style="font-size: 80%;">
+                <li>C++ module to Python</li>
+                <li>C++/Python application</li>
+            </ul>
+        </ul>
+    </div>
+  </section>
+  <!--***************************************************************************-->
+
+  <section>
+    before we start
+    <h3>What's the deal with <i class="yellow">Python</i>?</h3>
+    <p style="font-size: 200%;">🤔</p>
+  </section>
+
+  <section>
+  <h3>Webinars <i class="green">&amp;</i> Conferences 💻</h3>
+  <ul style="font-size: 60%;">
+      <li>Creating user interfaces with Qt for Python<br/><a href="https://youtu.be/wKqLaNqxgas">youtu.be/wKqLaNqxgas</a></li>
+      <li>Develop your first Qt for Python Application<br/><a href="https://youtu.be/HDBjmSiOBxY">youtu.be/HDBjmSiOBxY</a></li>
+      <li>Python and C++ interoperability with Shiboken<br/><a href="https://youtu.be/wOMlDutOWXI">youtu.be/wOMlDutOWXI</a></li>
+  </ul>
+  </section>
+
+  <section>
+  <h3>Documentation 📚</h3>
+  <ul style="font-size: 60%;">
+      <li>General: <a href="https://doc.qt.io/qtforpython">doc.qt.io/qtforpython</a></li>
+      <li>Shiboken: <a href="https://doc.qt.io/qtforpython/shiboken2">doc.qt.io/qtforpython/shiboken2</a></li>
+      <li>Resources: <a href="https://resources.qt.io">resources.qt.io</a></li>
+      <li><i class="yellow">In progress</i></li>
+      <ul>
+        <li>Build instructions (Video)</li>
+        <li>Contributing to Qt for Python (Video)</li>
+        <li>Small examples tutorials (Video)</li>
+        <li>Qt Creator example gallery</li>
+        <li>More tutorials and examples</li>
+      </ul>
+  </ul>
+  </section>
+
+  <section>
+    <img style="width: 30%; background: 0; border: 0;" src="img/qtforpython.png" />
+  </section>
+
+  <section>
+    <h3>Binding generation ⏳</h3>
+    <img style="width: 90%; background: 0; border: 0;" src="img/process.png" />
+  </section>
+
+  <section>
+    <h2>Setup 🔨</h2>
+  </section>
+
+  <section>
+    <h3>Installing <i class="green">PySide</i></h3>
+    <pre style="font-size: 90%; width: 50%;"><code class="bash" data-trim data-noescape>
+    pip install pyside2
+    </code></pre>
+    What does that install?
+    <pre style="font-size: 70%; width: 60%;"><code class="bash" data-trim data-noescape>
+     ▪️PySide2                     ✅
+      ├── Qt modules              ✅
+      ├── pyside2-designer        ✅
+      ├── pyside2-rcc             ✅
+      └── pyside2-uic             ✅
+     ▪️Shiboken2 (module)          ✅
+      └── shiboken2               ✅
+     ▪️Shiboken2_Generator (exe)   ❌
+      └── shiboken2               ❌
+    </code></pre>
+  </section>
+
+  <section>
+    <h3>Installing <i class="green">Shiboken</i></h3>
+    <h3><i class="yellow">the simple way</i></h3>
+    <pre class="fragment" data-fragment-index="1" style="font-size: 18px; width: 90%;"><code class="bash" data-trim data-noescape>
+    pip install \
+        --index-url=http://download.qt.io/official_releases/QtForPython/ \
+        --trusted-host download.qt.io \
+        shiboken2 pyside2 shiboken2_generator
+    </code></pre>
+    <p class="fragment" data-fragment-index="2">
+    But one needs to:
+    <ul style="font-size: 70%;" class="fragment" data-fragment-index="2">
+        <li>Set <i class="yellow">CLANG_INSTALL_DIR</i> to the libclang directory</li>
+        <li>Add to <i class="yellow">PATH</i> a Qt bin path with the same version</li>
+        <li>Add to <i class="yellow">LD_LIBRARY_PATH</i> the Qt lib path with the same version</li>
+    </ul>
+    </p>
+  </section>
+
+  <section>
+    <h3>Installing <i class="green">Shiboken</i></h3>
+    <h3><i class="red">the hard way?</i></h3>
+    <ul style="font-size: 70%;" class="fragment" data-fragment-index="1">
+        <li>Set <i class="yellow">CLANG_INSTALL_DIR</i> to the libclang directory</li>
+    </ul>
+    <pre class="fragment" data-fragment-index="2" style="font-size: 18px; width: 90%;"><code class="bash" data-trim data-noescape>
+    python setup.py install
+    # there are many other options!
+    </code></pre>
+    <a style="font-size: 80%;" href="https://doc.qt.io/qtforpython/gettingstarted.html">doc.qt.io/qtforpython/gettingstarted.html</a>
+  </section>
+
+  <section>
+  before jumping into the examples
+  <h3>Which <i class="green">IDE</i> should I <i class="yellow">use</i>?</h3>
+  </section>
+
+  <section>
+  <h3>IDEs support</h3>
+  <div class="container">
+      <div class="fragment" data-fragment-index="1" style="display: inline-block;float: left;width:24%;">
+        <img src="img/qtcreator.png" />
+      </div>
+      <div class="fragment" data-fragment-index="2" style="float: left; width: 24%;">
+        <img style="width: 37%;background-color: white;" src="img/logo_visualstudio.png" /><br/>
+        <img style="width: 37%;background-color: white;" src="img/logo_code.png" />
+      </div>
+      <div class="fragment" data-fragment-index="3" style="display: inline-block;width:24%;">
+        <img style="width: 37%;background-color: white;" src="img/logo_pycharm.png" /><br/>
+        <img style="width: 37%;background-color: white;" src="img/logo_spyder.png" /><br/>
+      </div>
+      <div class="fragment" data-fragment-index="4" style="float: right; width: 24%;">
+        <img style="width: 37%;background-color: white;" src="img/logo_vim.png" /><br/>
+        <img style="width: 37%;background-color: white;" src="img/logo_emacs.png" />
+      </div>
+  </div>
+  </section>
+
+  <section>
+    <h2>Let's look at some <i class="green">code</i></h2>
+  </section>
+
+  <section>
+  </section>
+
+
+  <section>
+    <h3>Resources</h3>
+    <ul style="font-size: 70%;">
+        <li>Technical Vision 🔭<br/><a href="https://www.qt.io/blog/2019/08/19/technical-vision-qt-python">qt.io/blog/2019/08/19/technical-vision-qt-python</a></li>
+        <li>Documentation 📚<br/><a href="https://doc.qt.io/qtforpython">doc.qt.io/qtforpython</a></li>
+        <li>Blogs, Webinars, Conferences, and more 🎉<br/><a href="https://resources.qt.io">resources.qt.io</a></li>
+    </ul>
+  </section>
+
+  <section>
+    <h3>What's next? 🤖</h3>
+    <ul>
+        <li class="fragment" >Currently in <i class="green">active development</i></li>
+        <li class="fragment" >Improvements to the <i class="blue">documentation</i></li>
+        <li class="fragment" >Detailed tutorial for <i class="yellow">scriptableapplication</i></li>
+        <li class="fragment" >Tooling to <i class="green">improve</i> our lives.</li>
+    </ul>
+  </section>
+  <!--***************************************************************************-->
+  <section>
+    but most importantly...
+    <h2>What do <i class="green">you</i> need?</h2>
+    we are community driven.<br/><br/>🌟<br/>
+    <a href="https://bugreports.qt.io">bugreports.qt.io</a>
+  </section>
+  <!--***************************************************************************-->
+  <section>
+    <div id="left30">
+    <p style="font-size: 350%;text-align: center;">
+    Q<i class="green">&amp;</i>A
+    </p>
+    <br/>
+    <h3 style="font-size: 105%;">💬 Let's talk!</h3>
+    </div>
+    <div id="right70">
+        <p style="margin-right: 10%; font-size: 80%;">
+            <i class="yellow">IRC</i><br/><font color="#41cd52">#qt-pyside</font> on Freenode<br/>
+            <i class="yellow">Matrix</i><br/><font color="#41cd52">#qt-pyside:matrix.org</font><br/><br/>
+            <i class="yellow">Telegram</i><br/><a href="https://t.me/qtforpython">t.me/qtforpython</a><br/>
+            <i class="yellow">Gitter</i><br/><a href="http://gitter.im/PySide/pyside2">gitter.im/PySide/pyside2</a><br/>
+        </p>
+    </div>
+  </section>
+</div>
+</div>
+<!--*****************************************************************************-->
+  <script src="lib/js/head.min.js"></script>
+  <script src="js/reveal.js"></script>
+  <script>
+    // More info https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+      transition: 'none', // none/fade/slide/convex/concave/zoom
+      // More info https://github.com/hakimel/reveal.js#dependencies
+      dependencies: [
+        { src: 'lib/js/classList.js', condition: function() {
+            return !document.body.classList;
+            }
+        },
+        { src: 'plugin/markdown/marked.js', condition: function() {
+            return !!document.querySelector( '[data-markdown]' );
+            }
+        },
+        { src: 'plugin/markdown/markdown.js', condition: function() {
+            return !!document.querySelector( '[data-markdown]' );
+            }
+        },
+        { src: 'plugin/highlight/highlight.js', async: true, callback: function() {
+            hljs.initHighlightingOnLoad();
+            }
+        },
+        { src: 'plugin/search/search.js', async: true },
+        { src: 'plugin/zoom-js/zoom.js', async: true },
+        { src: 'plugin/notes/notes.js', async: true }
+      ]
+    });
+  </script>
+<!--*****************************************************************************-->
+  <style type="text/css">
+  /* 1. Style header/footer <div> so they are positioned as desired. */
+  #header-left {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+  }
+  #header-right {
+    position: absolute;
+    top: 0%;
+    right: 0%;
+  }
+  #footer-left {
+    position: absolute;
+    bottom: 0%;
+    left: 0%;
+  }
+
+  /* Slide division */
+  #left {
+    left:-8.33%;
+    text-align: left;
+    float: left;
+    width:50%;
+    z-index:-10;
+  }
+
+  #right {
+    left:31.25%;
+    top: 75px;
+    float: right;
+    text-align: right;
+    z-index:-10;
+    width:50%;
+  }
+
+  #rightl {
+    left:31.25%;
+    top: 75px;
+    float: right;
+    text-align: left;
+    z-index:-10;
+    width:50%;
+  }
+
+  #left70 {
+    left:-8.33%;
+    text-align: left;
+    float: left;
+    width:66%;
+    z-index:-10;
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+
+  #right70 {
+    left:-8.33%;
+    text-align: right;
+    float: right;
+    width:66%;
+    z-index:-10;
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+  #right70l {
+    left:-8.33%;
+    text-align: left;
+    float: right;
+    width:66%;
+    z-index:-10;
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+  #left30 {
+    left:31.25%;
+    top: 75px;
+    float: left;
+    text-align: left;
+    z-index:-10;
+    width:26%;
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+
+  #right30 {
+    left:31.25%;
+    top: 75px;
+    float: right;
+    text-align: right;
+    z-index:-10;
+    width:26%;
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+  /* styles */
+  .green {
+    color: #41cd52;
+    font-style: normal;
+  }
+
+  .green-dark {
+    color: #17a81a;
+    font-style: normal;
+  }
+
+  .gray {
+    color: #646464;
+    font-style: normal;
+  }
+  .blue {
+    color: #306998;
+    font-style: normal;
+  }
+  .blue-light {
+    color: #4B8BBE;
+    font-style: normal;
+  }
+  .yellow {
+    color: #FFD43B;
+    font-style: normal;
+  }
+  .yellow-light {
+    color: #FFE873;
+    font-style: normal;
+  }
+
+  .white {
+    color: #ffffff;
+    font-style: normal;
+  }
+
+  .red {
+    color: #ff6961;
+    font-style: normal;
+  }
+  </style>
+
+  <!-- 2. Create hidden header/footer <div> -->
+  <div id="hidden" style="display:none;">
+    <div id="header">
+      <div id="header-left"></div>
+      <div id="header-right"><img src="img/qt.png" width="150px" /></div>
+      <div id="footer-left"><p style="font-size: 12pt;margin-left: 20px;">The Qt Company 2020  |
+      <img src="img/twitter.png" style="background: rgba(0,0,0,0);height: 20px; border: 0px; vertical-align: middle;">
+      <img src="img/github_white.png"  style="background: rgba(0,0,0,0);height: 20px; border: 0px; vertical-align: middle;">
+      <img src="img/linkedin.png"  style="background: rgba(0,0,0,0);height: 20px; border: 0px; vertical-align: middle;">
+      <strong><i class="green" style="font-size: 115%;">@cmaureir</i></strong></p></div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+  <script type="text/javascript">
+    // 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+    var header = $('#header').html();
+    if ( window.location.search.match( /print-pdf/gi ) ) {
+      Reveal.addEventListener( 'ready', function( event ) {
+        $('.slide-background').append(header);
+      });
+    }
+    else {
+      $('div.reveal').append(header);
+     }
+  </script>
+<!--*****************************************************************************-->
+</body>
+</html>
